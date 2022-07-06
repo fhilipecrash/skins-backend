@@ -16,6 +16,12 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
+
+  socket.on("send_username", (data) => {
+    console.log(data);
+  });
+
+
 });
 
 server.listen(3001, () => {
