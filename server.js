@@ -6,6 +6,7 @@ const cors = require("cors");
 
 app.use(cors());
 const server = http.createServer(app);
+const port = 3001
 
 const io = new Server(server, {
   cors: {
@@ -14,16 +15,28 @@ const io = new Server(server, {
   },
 });
 
+class Node {
+  constructor() {
+    this._name = "";
+    this._bid = 0;
+  }
+}
+
+class Stack {
+  constructor() {
+    this._nodes = [];
+  }
+}
+
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
-  socket.on("send_username", (data) => {
-    console.log(data);
-  });
-
+  socket.on("make_bid", (data) => {
+    socket.broadcast.emit("return_bid", data);
+  }); 
 
 });
 
-server.listen(3001, () => {
-  console.log("Server is running");
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
