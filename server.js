@@ -15,10 +15,16 @@ const io = new Server(server, {
   },
 });
 
+let bids = [0];
+
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
   socket.on("make_bid", (data) => {
+    if(data.bid > bids[bids.length - 1].bid) {
+      bids.push(data);
+      console.log(bids);
+    }
     socket.broadcast.emit("return_bid", data);
   }); 
 
