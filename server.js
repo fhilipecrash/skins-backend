@@ -15,19 +15,6 @@ const io = new Server(server, {
   },
 });
 
-class Node {
-  constructor() {
-    this._name = "";
-    this._bid = 0;
-  }
-}
-
-class Stack {
-  constructor() {
-    this._nodes = [];
-  }
-}
-
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
