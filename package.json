@@ -3,14 +3,16 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "nodemon": "^2.0.19",
-    "socket.io": "^4.5.1"
+    "socket.io": "^4.5.1",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
   },
   "name": "skins-backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "server.ts",
   "devDependencies": {},
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.ts"
   },
   "keywords": [],
   "author": "Fhilipe Coelho",
