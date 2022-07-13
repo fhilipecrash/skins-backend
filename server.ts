@@ -1,9 +1,9 @@
-const express = require("express");
-const app = express();
-const http = require("http");
-const { Server } = require("socket.io");
-const cors = require("cors");
+import { Server } from "socket.io";
+import cors from "cors";
+import express, { Express } from "express";
+import http from "http";
 
+const app: Express = express();
 app.use(cors());
 const server = http.createServer(app);
 const port = 3001
@@ -15,7 +15,7 @@ const io = new Server(server, {
   },
 });
 
-let bids = [0];
+const bids: { name: string; bid: number }[] = [{ name: "first", bid: 0 }];
 
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
@@ -24,8 +24,9 @@ io.on("connection", (socket) => {
     if(data.bid > bids[bids.length - 1].bid) {
       bids.push(data);
       console.log(bids);
+      socket.broadcast.emit("return_bid", data);
     }
-    socket.broadcast.emit("return_bid", data);
+
   }); 
 
 });
