@@ -20,18 +20,25 @@ interface BidProps {
   bid: number;
 }
 
-const bids: BidProps[] = [{ name: "first", bid: 0 }];
+const bids: BidProps[] = [];
 
 io.on("connection", (socket) => {
-  socket.emit("previousBids", bids);
+  if (bids.length > 0) {
+    socket.emit("previousBids", bids);
+  }
 
   socket.on("makeBid", (data) => {
-    if(data.bid > bids[bids.length - 1].bid) {
+    if (bids.length === 0) {
       bids.push(data);
       socket.broadcast.emit("returnBid", data);
       socket.broadcast.emit("updatedBids", bids);
+    } else {
+      if(data.bid > bids[bids.length - 1].bid) {
+        bids.push(data);
+        socket.broadcast.emit("returnBid", data);
+        socket.broadcast.emit("updatedBids", bids);
+      }
     }
-
   }); 
 
 });
