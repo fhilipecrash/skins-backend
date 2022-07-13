@@ -15,16 +15,21 @@ const io = new Server(server, {
   },
 });
 
-const bids: { name: string; bid: number }[] = [{ name: "first", bid: 0 }];
+interface BidProps {
+  name: string;
+  bid: number;
+}
+
+const bids: BidProps[] = [{ name: "first", bid: 0 }];
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  socket.emit("previousBids", bids);
 
-  socket.on("make_bid", (data) => {
+  socket.on("makeBid", (data) => {
     if(data.bid > bids[bids.length - 1].bid) {
       bids.push(data);
-      console.log(bids);
-      socket.broadcast.emit("return_bid", data);
+      socket.broadcast.emit("returnBid", data);
+      socket.broadcast.emit("updatedBids", bids);
     }
 
   }); 
