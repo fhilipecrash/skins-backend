@@ -10,5 +10,5 @@ Made with Express, Socket.IO and ❤️
 
 ```shellscript
 yarn
-yarn start
+yarn dev
 ```
