@@ -23,26 +23,31 @@ interface BidProps {
 const bids: BidProps[] = [];
 
 io.on("connection", (socket) => {
+  function setRoomName(room: string) {
+    roomName = room;
+  }
+
+  let roomName: string;
+
+  socket.on("makeRoom", async (room) => {
+    socket.join(room);
+    console.log(`joined room ${room}`);
+    await setRoomName(room);
+  });
+  
+
   if (bids.length > 0) {
     socket.emit("previousBids", bids);
   }
 
   socket.on("makeBid", (data) => {
-    if (bids.length === 0) {
+    if (bids.length === 0 || data.bid > bids[bids.length - 1].bid) {
       bids.push(data);
-      socket.broadcast.emit("returnBid", data);
-      socket.broadcast.emit("updatedBids", bids);
-    } else {
-      if(data.bid > bids[bids.length - 1].bid) {
-        bids.push(data);
-        socket.broadcast.emit("returnBid", data);
-        socket.broadcast.emit("updatedBids", bids);
-      }
+      socket.broadcast.to(roomName).emit("returnBid", data);
+      socket.broadcast.to(roomName).emit("updatedBids", bids);
     }
-  }); 
+  });
 
 });
 
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+server.listen(port, () => console.log(`Server is running on port ${port}`));
