@@ -20,7 +20,13 @@ interface BidProps {
   bid: number;
 }
 
-const bids: BidProps[] = [];
+const bidObj = {
+  "ak47": [] as BidProps[],
+  "m4a1": [] as BidProps[],
+  "awp": [] as BidProps[],
+  "p90": [] as BidProps[],
+  "karambit": [] as BidProps[]
+};
 
 io.on("connection", (socket) => {
   function setRoomName(room: string) {
@@ -36,13 +42,14 @@ io.on("connection", (socket) => {
   });
   
 
-  if (bids.length > 0) {
-    socket.emit("previousBids", bids);
+  if (bidObj[roomName].length > 0) {
+    socket.emit("previousBids", bidObj[roomName]);
   }
 
   socket.on("makeBid", (data) => {
     if (bids.length === 0 || data.bid > bids[bids.length - 1].bid) {
-      bids.push(data);
+      // bids.push(data);
+      bidArr[roomName].push(data);
       socket.broadcast.to(roomName).emit("returnBid", data);
       socket.broadcast.to(roomName).emit("updatedBids", bids);
     }
