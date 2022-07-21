@@ -20,7 +20,7 @@ interface BidProps {
   bid: number;
 }
 
-const bidObj = {
+const bidObj: Record<string, BidProps[]> = {
   "ak47": [] as BidProps[],
   "m4a1": [] as BidProps[],
   "awp": [] as BidProps[],
@@ -28,30 +28,20 @@ const bidObj = {
   "karambit": [] as BidProps[]
 };
 
+
 io.on("connection", (socket) => {
-  function setRoomName(room: string) {
-    roomName = room;
-  }
+  const room = String(socket.handshake.query.room);
+  socket.join(room);
 
-  let roomName: string;
-
-  socket.on("makeRoom", async (room) => {
-    socket.join(room);
-    console.log(`joined room ${room}`);
-    await setRoomName(room);
-  });
-  
-
-  if (bidObj[roomName].length > 0) {
-    socket.emit("previousBids", bidObj[roomName]);
+  if (bidObj[room].length > 0) {
+    socket.emit("previousBids", bidObj[room]);
   }
 
   socket.on("makeBid", (data) => {
-    if (bids.length === 0 || data.bid > bids[bids.length - 1].bid) {
-      // bids.push(data);
-      bidArr[roomName].push(data);
-      socket.broadcast.to(roomName).emit("returnBid", data);
-      socket.broadcast.to(roomName).emit("updatedBids", bids);
+    if (bidObj[room].length === 0 || data.bid > bidObj[room][bidObj[room].length - 1].bid) {
+      bidObj[room].push(data);
+      socket.broadcast.to(room).emit("returnBid", data);
+      socket.broadcast.to(room).emit("updatedBids", bidObj[room]);
     }
   });
 
