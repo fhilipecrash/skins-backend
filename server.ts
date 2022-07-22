@@ -11,7 +11,7 @@ const port = 3001
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "HEAD", "PUT", "DELETE"],
   },
 });
 
