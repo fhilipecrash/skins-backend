@@ -10,8 +10,8 @@ const port = 3001
 
 const io = new Server(server, {
   cors: {
-    origin: "https://skins-frontend.herokuapp.com/",
-    methods: ["GET", "POST", "HEAD", "PUT", "DELETE"],
+    origin: "*",
+    methods: ["GET", "POST"],
   },
 });
 
