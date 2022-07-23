@@ -1,0 +1,13 @@
+* {
+  background-color: #23272e;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}

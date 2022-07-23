@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import cors from "cors";
 import express, { Express } from "express";
 import http from "http";
+import path from 'path';
 
 const app: Express = express();
 app.use(cors());
@@ -28,6 +29,7 @@ const bidObj: Record<string, BidProps[]> = {
   "karambit": [] as BidProps[]
 };
 
+app.use('/', express.static(path.join(__dirname, '/public')));
 
 io.on("connection", (socket) => {
   const room = String(socket.handshake.query.room);
