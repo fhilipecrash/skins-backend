@@ -1,18 +1,17 @@
 import { Server } from "socket.io";
 import cors from "cors";
 import express, { Express } from "express";
-import http from "http";
+import { createServer } from "http";
 import path from 'path';
 
 const app: Express = express();
-app.use(cors({ origin: 'https://skins-frontend.herokuapp.com/' }));
-const server = http.createServer(app);
+app.use(cors());
+const server = createServer(app);
 const port = 3001
 
 const io = new Server(server, {
   cors: {
-    origin: "https://skins-frontend.herokuapp.com/",
-    methods: ["GET", "POST"],
+    origin: "http://localhost:3000/",
   },
 });
 
