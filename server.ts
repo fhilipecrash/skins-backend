@@ -5,13 +5,13 @@ import http from "http";
 import path from 'path';
 
 const app: Express = express();
-app.use(cors());
+app.use(cors({ origin: 'https://skins-frontend.herokuapp.com/' }));
 const server = http.createServer(app);
 const port = 3001
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://skins-frontend.herokuapp.com/",
     methods: ["GET", "POST"],
   },
 });
